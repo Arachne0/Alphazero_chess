@@ -1,4 +1,4 @@
-./train_nmcts50
-./train_nmcts75
-./train_nmcts100
+train_nmcts50.py
+train_nmcts75.py
+train_nmcts100.py
 .idea/
