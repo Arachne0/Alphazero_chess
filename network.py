@@ -148,17 +148,17 @@ class Net(nn.Module):
         self.board_width = board_width
         self.board_height = board_height
 
+        # Expanded convolutional layers
         self.conv1 = nn.Conv2d(119, 64, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
         self.conv3 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
-        self.conv4 = nn.Conv2d(256, 128, kernel_size=1)
-        self.conv5 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
-        self.conv6 = nn.Conv2d(256, 128, kernel_size=3, padding=1)
+        self.conv4 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
+
         # action policy layers
-        self.act_conv1 = nn.Conv2d(128, 4, kernel_size=1)
+        self.act_conv1 = nn.Conv2d(256, 4, kernel_size=1)
         self.act_fc1 = nn.Linear(4 * board_width * board_height, board_width * board_height * 73)
         # state value layers
-        self.val_conv1 = nn.Conv2d(128, 2, kernel_size=1)
+        self.val_conv1 = nn.Conv2d(256, 2, kernel_size=1)
         self.val_fc1 = nn.Linear(2 * board_width * board_height, 256)
         self.val_fc2 = nn.Linear(256, 1)
 
@@ -168,8 +168,6 @@ class Net(nn.Module):
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
-        x = F.relu(self.conv5(x))
-        x = F.relu(self.conv6(x))
 
         # action policy layers
         x_act = F.relu(self.act_conv1(x))
@@ -286,3 +284,5 @@ class PolicyValueNet():
         # Ensure that the directory exists before saving the file
         os.makedirs(os.path.dirname(model_file), exist_ok=True)
         torch.save(net_params, model_file)
+
+

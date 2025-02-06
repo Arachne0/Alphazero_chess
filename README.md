@@ -1,4 +1,12 @@
+# MAC First
 ```bash
+brew install cairo
+pip3 install cairosvg
+ln -s /opt/homebrew/lib/libcairo.2.dylib .
+```
+
+## (Ubuntu) & (MAC)
+```bash 
 sudo apt-get update
 sudo apt-get install libcairo2 libcairo2-dev
 pip install chess
