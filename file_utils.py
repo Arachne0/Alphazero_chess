@@ -5,7 +5,7 @@ import wandb
 def initialize_wandb(args, n_playout=None):
     common_config = {
         "entity": "hails",
-        "project": "gym_chess_PT",
+        "project": "gym_chess",
         "config": args.__dict__
     }
 

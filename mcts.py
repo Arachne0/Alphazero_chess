@@ -108,7 +108,6 @@ class MCTS(object):
             planning_depth += 1
             if node.is_leaf():
                 break
-
             # Greedily select next move.
             action, node = node.select(self._c_puct)
             env.step(action)
@@ -118,19 +117,14 @@ class MCTS(object):
 
         if env.terminal is False:
             node.expand(action_probs)
-
         else:
-            if env.reward == 0:  # tie
+            if env.reward == -1:  # tie
                 leaf_value = 0.0
-            elif env.reward == env.turn:
-                leaf_value = 1.0
             else:
-                leaf_value = -1.0
+                leaf_value = (1.0 if env.reward == env.turn else -1.0)
 
         # Update value and visit count of nodes in this traversal.
         node.update_recursive(-leaf_value)
-
-        return planning_depth
 
     def get_move_probs(self, env, game_iter, temp=1e-3):
         """Run all playouts sequentially and return the available actions and
@@ -142,9 +136,9 @@ class MCTS(object):
             env_ = copy.deepcopy(env)
             planning_depth = self._playout(env_)
 
-            if game_iter+1 in [1, 10, 20, 31, 50, 100, 200, 300, 500, 700, 1000, 1200, 1500, 1700, 2000]:
-                graph_name = f"depth_fre/game_iter_{game_iter+1}"
-                wandb.log({graph_name: planning_depth})
+            # if game_iter+1 in [1, 10, 20, 31, 50, 100, 200, 300, 500, 700, 1000, 1200, 1500, 1700, 2000]:
+            #     graph_name = f"depth_fre/game_iter_{game_iter+1}"
+            #     wandb.log({graph_name: planning_depth})
 
         # calc the move probabilities based on visit counts at the root node
         act_visits = [(act, node._n_visits)

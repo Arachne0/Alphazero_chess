@@ -268,7 +268,10 @@ class Chess(gym.Env):
         # self.board = self.board.mirror()
 
         result = self.board.result(claim_draw=True)
-        self.reward = 0 if result == '*' or result == '1/2-1/2' else 1 if result == '1-0' else -1  # if result == '0-1'
+        # self.reward = 0 if result == '*' or result == '1/2-1/2' else 1 if result == '1-0' else -1  # if result == '0-1'
+        # self.reward = -1 if result == '*' or result == '1/2-1/2' else 1 if result == '1-0' else -2
+        # self.reward = -3 if result == '*' or result == '1/2-1/2' else 3 if result == '1-0' else -4
+        self.reward = -1 if result == '*' or result == '1/2-1/2' else 1 if result == '1-0' else 0  # win 1, draw -1, defeat 0
         self.terminal = self.board.is_game_over(claim_draw=True)
         self.info = {'last_move': move, 'turn': self.board.turn}
 
